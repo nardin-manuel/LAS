@@ -1,0 +1,5 @@
+{
+    "INFLUXDB_ORG": "unive",
+    "INFLUXDB_BUCKET": "geth",
+    "MINER_ADDRESS": "0xc6f12EAAB2f6612a2156df2EDE849b8E289cAd26"
+}

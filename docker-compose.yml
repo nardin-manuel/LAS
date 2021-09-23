@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+    bootnode:
+        image: las_bootnode
+        build: ./bootnode
+        volumes:
+            - eth-bootnode-storage:/opt/bootnode
+            - bootnode-pub-key:/opt/bootnode/key/
+
+    minernode:
+        image: las_minernode
+        build: ./minerNode
+        volumes:
+            - minernode-storage:/root
+            - bootnode-pub-key:/root/key/:ro
+        configs:
+            - my_config
+            - source: genesis
+              target: /opt/genesis.json
+        secrets:
+            - influx_token 
+        depends_on:
+            - "bootnode"
+            - "influx"
+            
+    fullnode:
+        image: las_fullnode
+        build: ./fullNode
+
+        volumes:
+            - fullnode-storage:/root
+            - bootnode-pub-key:/root/key/:ro
+        configs:
+            - my_config
+            - source: genesis
+              target: /opt/genesis.json
+        secrets:
+            - influx_token 
+        ports: 
+            - "8545:8545"
+        depends_on:
+            - "bootnode"
+            - "influx"
+
+    # blockExplorer:
+    #     image: alethio/ethereum-lite-explorer
+    #     environment: 
+    #         - APP_NODE_URL="http://localhost:8545"
+    #     ports: 
+    #         - "8080:80"
+    
+
+volumes:
+    fullnode-storage:
+    eth-bootnode-storage:
+    bootnode-pub-key:
+    minernode-storage:
+
+secrets:
+    influx_token:
+        external: true
+
+configs:
+    my_config:
+        file: ./config.json
+    genesis:
+        file: ./genesis.json

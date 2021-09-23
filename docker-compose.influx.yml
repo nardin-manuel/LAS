@@ -1,0 +1,15 @@
+version: "3.9"
+services:
+    influx:
+            image: influxdb
+            volumes:
+                - influx-data:/var/lib/influxdb2
+                - influx-config:/etc/influxdb2      
+            ports: 
+                - "18086:8086"
+
+
+    
+volumes:
+    influx-data:
+    influx-config:
