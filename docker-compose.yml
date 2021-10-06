@@ -22,7 +22,7 @@ services:
             - influx_token 
         depends_on:
             - "bootnode"
-            - "influx"
+
             
     fullnode:
         image: las_fullnode
@@ -41,14 +41,6 @@ services:
             - "8545:8545"
         depends_on:
             - "bootnode"
-            - "influx"
-
-    # blockExplorer:
-    #     image: alethio/ethereum-lite-explorer
-    #     environment: 
-    #         - APP_NODE_URL="http://localhost:8545"
-    #     ports: 
-    #         - "8080:80"
     
 
 volumes:
